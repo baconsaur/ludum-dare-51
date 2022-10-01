@@ -32,6 +32,7 @@ signal card_selected
 signal card_deselected
 
 func _ready():
+	randomize()
 	refresh_hand()
 
 func _process(delta):

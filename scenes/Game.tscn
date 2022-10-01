@@ -14,7 +14,7 @@ tile_set = ExtResource( 4 )
 tile_data = PoolIntArray( 65540, 1, 0 )
 
 [node name="Character" parent="." instance=ExtResource( 5 )]
-position = Vector2( 288, 95 )
+position = Vector2( 288, 96 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
