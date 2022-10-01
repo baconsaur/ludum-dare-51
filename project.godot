@@ -14,6 +14,23 @@ config/name="Ludum Dare 51"
 run/main_scene="res://scenes/MainMenu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+IntegerResolutionHandler="*res://addons/integer_resolution_handler/integer_resolution_handler.gd"
+
+[display]
+
+window/integer_resolution_handler/base_width=640
+window/integer_resolution_handler/base_height=360
+window/size/width=640
+window/size/height=360
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/integer_resolution_handler/plugin.cfg" )
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

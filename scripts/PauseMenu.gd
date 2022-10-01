@@ -17,9 +17,6 @@ func _on_MainMenuButton_pressed():
 	unpause()
 	get_tree().change_scene(menu_scene)
 
-func _on_ExitButton_pressed():
-	get_tree().quit()
-
 func unpause():
 	get_tree().paused = false
 	queue_free()
