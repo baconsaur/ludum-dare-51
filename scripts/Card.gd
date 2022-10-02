@@ -1,6 +1,6 @@
 extends TextureButton
 
-var card_data: Dictionary
+var card_name: String
 var is_selected = false
 
 onready var sprite = $AnimatedSprite
@@ -8,9 +8,9 @@ onready var sprite = $AnimatedSprite
 signal played
 
 
-func set_data(data):
-	card_data = data
-	sprite.play(data["sprite_name"])
+func set_type(name):
+	card_name = name
+	sprite.play(name)
 
 func play():
 	destroy()

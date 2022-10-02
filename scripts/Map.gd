@@ -3,6 +3,7 @@ extends TileMap
 var placeable_tile = null
 
 signal tile_played
+signal effect_complete
 
 
 func allow_placement(tile_name):
@@ -11,7 +12,7 @@ func allow_placement(tile_name):
 func disallow_placement():
 	placeable_tile = null
 
-func _input(event):
+func _unhandled_input(event):
 	if !placeable_tile:
 		return
 
@@ -22,15 +23,23 @@ func _input(event):
 			set_cellv(pos, tile)
 			emit_signal("tile_played")
 
-func visit(pos):
-	var tile_name = tile_set.tile_get_name(get_cellv(pos))
-	set_cellv(pos, tile_set.find_tile_by_name(tile_name + " visited"))
+func get_tile_name(pos):
+	return tile_set.tile_get_name(get_cellv(pos))
 
-func is_valid_cell(pos):
-	if "visited" in tile_set.tile_get_name(get_cellv(pos)):
+func visit(pos):
+	set_cellv(pos, tile_set.find_tile_by_name("visited"))
+
+func is_available_cell(pos):
+	if not is_valid_cell(pos):
 		return false
 
 	return not is_out_of_bounds(pos)
 
 func is_out_of_bounds(pos):
 	return get_cellv(pos) <= 0
+
+func is_valid_cell(pos):
+	var tile_index = get_cellv(pos)
+	if tile_index == INVALID_CELL:
+		return false
+	return tile_set.tile_get_name(tile_index) != "visited"

@@ -1,23 +1,60 @@
 extends Node
 
-
-var CARD_DATA = {
-	"1": {
-		"tile_name": "clearing 1",
+var card_data = {
+	"clearing": {
+		"effect": {
+			"type": "character",
+			"name": "pass",
+			"args": []
+		}
 	},
-	"2": {
-		"tile_name": "clearing 2",
+	"swamp": {
+		"effect": {
+			"type": "character",
+			"name": "delay",
+			"args": [1]
+		}
 	},
-	"3": {
-		"tile_name": "clearing 3",
+	"thorns": {
+		"effect": {
+			"type": "character",
+			"name": "damage",
+			"args": [1]
+		}
 	},
-	"4": {
-		"tile_name": "clearing 4",
+	"food": {
+		"effect": {
+			"type": "character",
+			"name": "heal",
+			"args": [1]
+		}
+	},
+	"draw_1": {
+		"effect": {
+			"type": "ui",
+			"name": "draw_cards",
+			"args": [1]
+		}
+	},
+	"draw_3": {
+		"effect": {
+			"type": "ui",
+			"name": "draw_cards",
+			"args": [3]
+		}
+	},
+	"extend_time_5": {
+		"effect": {
+			"type": "ui",
+			"name": "extend_time",
+			"args": [5]
+		}
+	},
+	"discard_hand": {
+		"effect": {
+			"type": "ui",
+			"name": "discard_cards",
+			"args": [0]
+		}
 	},
 }
-
-func get_card_names():
-	return CARD_DATA.keys()
-
-func get_card(key):
-	return CARD_DATA[key]

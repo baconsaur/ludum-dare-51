@@ -8,18 +8,22 @@ onready var map = $Map
 onready var character = $Character
 onready var camera = $Character/Camera2D
 onready var map_offset = map.cell_size / 2
+onready var card_data = get_node("/root/CardData").card_data
 
 
 func _ready():
 	init_map()
 	character.connect("arrived", self, "handle_character_arrived")
+	character.connect("update_health", self, "handle_update_health")
+	character.connect("dead", self, "handle_death")
 	map.connect("tile_played", self, "handle_tile_played")
 	ui.connect("card_selected", self, "handle_card_select")
 	ui.connect("card_deselected", self, "handle_card_deselect")
+	handle_update_health()
 
 func handle_card_select(card):
 	selected_card = card
-	map.allow_placement(card.card_data.tile_name)
+	map.allow_placement(card.card_name)
 
 func handle_card_deselect():
 	selected_card = null
@@ -31,11 +35,10 @@ func handle_tile_played():
 
 func handle_character_arrived():
 	var map_pos = local_to_map(character.position)
-	if map.is_out_of_bounds(map_pos):
+	if not map.is_available_cell(map_pos):
 		end_game()
-		return
-	map.visit(map_pos)
-	move_character()
+	else:
+		start_tile_effect(map_pos)
 
 func init_map():
 	var screen_size = get_viewport().size
@@ -54,16 +57,22 @@ func init_character(map_pos):
 	move_character()
 
 func move_character():
-	var directions_available = []
+	var available_directions = []
+	var valid_directions = []
 	var map_position = local_to_map(character.last_position)
 	for direction in all_directions:
-		if map.is_valid_cell(map_position + direction):
-			directions_available.append(direction)
+		if map.is_available_cell(map_position + direction):
+			available_directions.append(direction)
+		elif map.is_valid_cell(map_position + direction):
+			valid_directions.append(direction)
 
-	if directions_available.empty():
-		directions_available = all_directions # TODO prefer out of bounds tiles over visited
+	if available_directions.empty():
+		if valid_directions.empty():
+			available_directions = all_directions
+		else:
+			available_directions = valid_directions
 
-	var direction = directions_available[randi() % directions_available.size()]
+	var direction = available_directions[randi() % available_directions.size()]
 	var target_map_position = map_position + direction
 
 	character.set_target_position(map_to_local(target_map_position), target_map_position)
@@ -74,5 +83,54 @@ func map_to_local(map_pos):
 func local_to_map(pos):
 	return map.world_to_map(pos)
 
+func start_tile_effect(tile_pos):
+	var tile_effect = card_data[map.get_tile_name(tile_pos)]["effect"]
+	var signal_obj = null
+	match tile_effect["type"]:
+		"ui":
+			signal_obj = ui
+		"character":
+			signal_obj = character
+		"map":
+			signal_obj = map
+	if signal_obj:
+		signal_obj.connect("effect_complete", self, "finish_tile_effect", [tile_pos], CONNECT_ONESHOT)
+	callv("effect_" + tile_effect["name"], tile_effect["args"])
+
+func finish_tile_effect(tile_pos):
+	map.visit(tile_pos)
+	move_character()
+
+############# START TILE EFFECTS #############
+
+func effect_pass():
+	character.do_nothing()
+
+func effect_delay(delay):
+	character.delay(delay)
+
+func effect_damage(amount):
+	character.take_damage(amount)
+
+func effect_heal(amount):
+	character.heal_damage(amount)
+
+func effect_draw_cards(num_cards):
+	ui.draw_cards(num_cards)
+
+func effect_extend_time(seconds):
+	ui.extend_time(seconds)
+
+func effect_discard_cards(num_cards):
+	ui.discard_cards(num_cards)
+	
+############# END TILE EFFECTS #############
+
+func handle_update_health():
+	ui.update_health(character.health)
+
+func handle_death():
+	end_game()
+	
 func end_game():
 	get_tree().reload_current_scene()

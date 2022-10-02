@@ -1,14 +1,19 @@
 extends Node2D
 
 export var move_speed = 0.3
+export var max_health = 3
 
 var is_traveling = false
 
+onready var health = max_health
 onready var sprite = $AnimatedSprite
 onready var last_position = position
 onready var target_position = position
 
 signal arrived
+signal effect_complete
+signal update_health
+signal dead
 
 
 func _ready():
@@ -35,3 +40,25 @@ func set_initial_position(pos, map_pos):
 func set_target_position(pos, map_pos):
 	target_position = pos
 	is_traveling = true
+
+func do_nothing():
+	emit_signal("effect_complete")
+
+func delay(seconds):
+	yield(get_tree().create_timer(seconds), "timeout") # TODO add animation
+	emit_signal("effect_complete")
+
+func take_damage(amount):
+	health -= amount
+	emit_signal("update_health")
+	if health <= 0:
+		emit_signal("dead")
+		return
+	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
+	emit_signal("effect_complete")
+
+func heal_damage(amount):
+	health = min(health + amount, max_health)
+	emit_signal("update_health")
+	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
+	emit_signal("effect_complete")

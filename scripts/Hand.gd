@@ -5,28 +5,11 @@ export var REFRESH_SECONDS = 10
 
 var refresh_countdown = 0
 var card_obj = preload("res://scenes/Card.tscn")
-var card_data = [
-	{
-		"sprite_name": "1",
-		"tile_name": "clearing 1",
-	},
-	{
-		"sprite_name": "2",
-		"tile_name": "clearing 2",
-	},
-	{
-		"sprite_name": "3",
-		"tile_name": "clearing 3",
-	},
-	{
-		"sprite_name": "4",
-		"tile_name": "clearing 4",
-	},
-]
 var cards = []
 
 onready var refresh_meter: Control = $HandContainer/RefreshCountdown
 onready var card_container: Control = $HandContainer/CardContainer
+onready var card_names = get_node("/root/CardData").card_data.keys()
 
 signal card_selected
 signal card_deselected
@@ -64,13 +47,29 @@ func refresh_hand():
 	cards = []
 	
 	refresh_countdown = REFRESH_SECONDS
-	for i in HAND_SIZE:
+	for i in range(HAND_SIZE):
+		add_card()
+
+func add_card():
 		var card = card_obj.instance()
 		card_container.add_child(card)
 		card.connect("pressed", self, "select_card", [card])
 		card.connect("played", self, "handle_card_played", [card])
 		
-		var random_card_data = card_data[randi() % card_data.size()]
-		card.set_data(random_card_data)
+		var random_card = card_names[randi() % card_names.size()]
+		card.set_type(random_card)
 		
 		cards.append(card)
+
+func draw_cards(num_cards):
+	for i in range(num_cards):
+		add_card()
+
+func extend_time(seconds):
+	refresh_countdown += seconds
+
+func discard_cards(num_cards):
+	if num_cards == 0:
+		refresh_hand()
+	else:
+		pass # TODO

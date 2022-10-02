@@ -6,6 +6,7 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
+mouse_filter = 2
 script = ExtResource( 1 )
 
 [node name="HandContainer" type="VBoxContainer" parent="."]
@@ -14,6 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="RefreshCountdown" type="ProgressBar" parent="HandContainer"]
 margin_left = 270.0
@@ -34,6 +36,7 @@ margin_right = 640.0
 margin_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
