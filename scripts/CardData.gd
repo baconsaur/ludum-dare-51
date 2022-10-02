@@ -2,6 +2,7 @@ extends Node
 
 var card_data = {
 	"clearing": {
+		"play_on": "empty",
 		"weight": 75,
 		"points": 1,
 		"effect": {
@@ -11,6 +12,7 @@ var card_data = {
 		}
 	},
 	"swamp": {
+		"play_on": "empty",
 		"weight": 20,
 		"points": 0,
 		"effect": {
@@ -20,6 +22,7 @@ var card_data = {
 		}
 	},
 	"up": {
+		"play_on": "empty",
 		"weight": 25,
 		"points": 1,
 		"effect": {
@@ -29,6 +32,7 @@ var card_data = {
 		}
 	},
 	"down": {
+		"play_on": "empty",
 		"weight": 25,
 		"points": 1,
 		"effect": {
@@ -38,6 +42,7 @@ var card_data = {
 		}
 	},
 	"left": {
+		"play_on": "empty",
 		"weight": 25,
 		"points": 1,
 		"effect": {
@@ -47,6 +52,7 @@ var card_data = {
 		}
 	},
 	"right": {
+		"play_on": "empty",
 		"weight": 25,
 		"points": 1,
 		"effect": {
@@ -56,7 +62,9 @@ var card_data = {
 		}
 	},
 	"thorns": {
-		"weight": 30,
+		"play_on": "empty",
+		"hand_max": 3,
+		"weight": 40,
 		"points": 2,
 		"effect": {
 			"type": "character",
@@ -65,6 +73,7 @@ var card_data = {
 		}
 	},
 	"food": {
+		"play_on": "empty",
 		"weight": 15,
 		"points": 1,
 		"effect": {
@@ -74,6 +83,7 @@ var card_data = {
 		}
 	},
 	"draw_1": {
+		"play_on": "empty",
 		"weight": 10,
 		"points": 1,
 		"effect": {
@@ -83,6 +93,7 @@ var card_data = {
 		}
 	},
 	"draw_3": {
+		"play_on": "empty",
 		"weight": 5,
 		"points": 1,
 		"effect": {
@@ -92,6 +103,7 @@ var card_data = {
 		}
 	},
 	"fast": {
+		"play_on": "empty",
 		"weight": 10,
 		"points": 2,
 		"effect": {
@@ -101,12 +113,24 @@ var card_data = {
 		}
 	},
 	"slow": {
+		"play_on": "empty",
 		"weight": 10,
 		"points": 0,
 		"effect": {
 			"type": "character",
 			"name": "modify_speed",
 			"args": [0.75, 10]
+		}
+	},
+	"clear": {
+		"play_on": "visited",
+		"tile_name": "woods",
+		"weight": 100,
+		"points": 1,
+		"effect": {
+			"type": "character",
+			"name": "clear_visited",
+			"args": []
 		}
 	},
 #	"extend_time_5": {

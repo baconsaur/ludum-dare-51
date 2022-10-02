@@ -6,6 +6,7 @@ export var REFRESH_SECONDS = 10
 var refresh_countdown = 0
 var card_obj = preload("res://scenes/Card.tscn")
 var cards = []
+var first_hand = true
 
 onready var refresh_meter: Control = $HandContainer/RefreshCountdown
 onready var card_container: Control = $HandContainer/CardContainer
@@ -17,6 +18,7 @@ signal card_deselected
 func _ready():
 	randomize()
 	refresh_hand()
+	first_hand = false
 
 func _process(delta):
 	refresh_countdown -= delta
@@ -47,23 +49,42 @@ func refresh_hand():
 	cards = []
 	
 	refresh_countdown = REFRESH_SECONDS
-	for i in range(HAND_SIZE):
-		add_card()
+	add_cards(HAND_SIZE)
 
-func add_card():
+func add_cards(num_cards, make_fair=true):
+	var cards_selected = []
+	for i in range(num_cards):
+		var random_card = randomize_card()
+		var random_card_data = card_data[random_card]
+		if make_fair:
+			if "hand_max" in random_card_data:
+				while(not is_fair(random_card, random_card_data, cards_selected)):
+					random_card = randomize_card()
+					random_card_data = card_data[random_card]
+			elif first_hand and random_card == "clear":
+				while(random_card == "clear"):
+					random_card = randomize_card()
+		cards_selected.append(random_card)
+	
+	for card in cards_selected:
+		add_card(card)
+
+func is_fair(name, data, cards_selected):
+	if not "hand_max" in data:
+		return true
+	return cards_selected.count(name) + 1 <= data["hand_max"]
+
+func add_card(random_card):
 	var card = card_obj.instance()
 	card_container.add_child(card)
 	card.connect("pressed", self, "select_card", [card])
 	card.connect("played", self, "handle_card_played", [card])
-	
-	var random_card = randomize_card()
-	card.set_type(random_card)
+	card.set_type(random_card, card_data[random_card])
 	
 	cards.append(card)
 
 func draw_cards(num_cards):
-	for i in range(num_cards):
-		add_card()
+	add_cards(num_cards, false)
 
 func extend_time(seconds):
 	refresh_countdown += seconds

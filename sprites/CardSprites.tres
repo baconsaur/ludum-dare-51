@@ -1,6 +1,10 @@
-[gd_resource type="SpriteFrames" load_steps=16 format=2]
+[gd_resource type="SpriteFrames" load_steps=17 format=2]
 
 [ext_resource path="res://sprites/card_images.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 1 )
+region = Rect2( 896, 0, 64, 96 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
@@ -60,6 +64,11 @@ region = Rect2( 704, 0, 64, 96 )
 
 [resource]
 animations = [ {
+"frames": [ SubResource( 16 ) ],
+"loop": true,
+"name": "clear",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 2 ) ],
 "loop": true,
 "name": "clearing",

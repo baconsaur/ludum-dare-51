@@ -5,6 +5,7 @@ export var padding_tiles = 3
 var placeable_tile = null
 var bounds_min = Vector2()
 var bounds_max = Vector2()
+var placement_filter = 0
 
 signal tile_played
 signal effect_complete
@@ -14,11 +15,16 @@ signal tile_unhover
 onready var padding = padding_tiles * cell_size.x
 
 
-func allow_placement(tile_name):
+func allow_placement(tile_name, filter):
 	placeable_tile = tile_name
+	if filter == "empty":
+		placement_filter = 0
+	else:
+		placement_filter = tile_set.find_tile_by_name(filter)
 
 func disallow_placement():
 	placeable_tile = null
+	placement_filter = 0
 
 func _unhandled_input(event):
 	if !placeable_tile:
@@ -27,13 +33,13 @@ func _unhandled_input(event):
 
 	if event is InputEventMouseButton and event.pressed:
 		var pos = world_to_map(get_global_mouse_position())
-		if get_cellv(pos) == 0:
+		if get_cellv(pos) == placement_filter:
 			var tile = tile_set.find_tile_by_name(placeable_tile)
 			set_cellv(pos, tile)
 			emit_signal("tile_played")
 	elif event is InputEventMouseMotion:
 		var pos = world_to_map(get_global_mouse_position())
-		if get_cellv(pos) == 0:
+		if get_cellv(pos) == placement_filter:
 			emit_signal("tile_hover", pos)
 		else:
 			emit_signal("tile_unhover")

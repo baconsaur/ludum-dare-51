@@ -45,7 +45,7 @@ func _process(delta):
 
 func handle_card_select(card):
 	selected_card = card
-	map.allow_placement(card.card_name)
+	map.allow_placement(card.card_name, card.play_on)
 
 func handle_card_deselect():
 	selected_card = null
