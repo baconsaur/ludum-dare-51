@@ -2,6 +2,7 @@ extends Node2D
 
 export var character_cursor_color = Color("#c57835")
 export var player_cursor_color = Color("#2f4c6c")
+export var spawn_point = Vector2(0, 0)
 
 var selected_card: Control
 var all_directions = [Vector2(0, 1), Vector2(1, 0), Vector2(-1, 0), Vector2(0, -1)]
@@ -12,7 +13,7 @@ var player_cursor = null
 onready var ui = $CanvasLayer/UI
 onready var map = $Map
 onready var character = $Character
-onready var camera = $Character/Camera2D
+onready var camera = $Camera2D
 onready var map_offset = map.cell_size / 2
 onready var card_data = get_node("/root/CardData").card_data
 
@@ -52,15 +53,22 @@ func handle_character_arrived():
 func init_map():
 	var screen_size = get_viewport().size
 	var cell_size = map.cell_size.x
-	for y in range(-1, screen_size.y + camera.position.y + cell_size, cell_size):
-		for x in range(-1, screen_size.x + cell_size, cell_size):
+	
+#	var y_bound = screen_size.y / 4 + map.padding
+#	var x_bound = screen_size.x / 4 + map.padding
+	var y_bound = map.padding
+	var x_bound = map.padding
+
+	for y in range(-y_bound, y_bound + cell_size, cell_size):
+		for x in range(-x_bound, x_bound + cell_size, cell_size):
 			var tile_pos = local_to_map(Vector2(x, y))
 			if map.get_cell(tile_pos.x, tile_pos.y) == map.INVALID_CELL:
 				map.set_cell(tile_pos.x, tile_pos.y, 0)
-			else:
-				init_character(Vector2(tile_pos.x, tile_pos.y))
+			map.update_bounds(tile_pos)
+	init_character(spawn_point)
 
 func init_character(map_pos):
+	camera.follow_target = character
 	map.visit(map_pos)
 	character.set_initial_position(map_to_local(map_pos))
 	move_character()
@@ -83,6 +91,7 @@ func move_character():
 
 	var direction = available_directions[randi() % available_directions.size()]
 	var target_map_position = map_position + direction
+	map.expand(target_map_position)
 
 	var local_target_position = map_to_local(target_map_position)
 	character.set_target_position(local_target_position)
