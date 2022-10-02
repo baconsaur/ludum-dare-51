@@ -1,7 +1,13 @@
 extends Node2D
 
+export var character_cursor_color = Color("#c57835")
+export var player_cursor_color = Color("#2f4c6c")
+
 var selected_card: Control
 var all_directions = [Vector2(0, 1), Vector2(1, 0), Vector2(-1, 0), Vector2(0, -1)]
+var cursor_obj = preload("res://scenes/Cursor.tscn")
+var character_cursor = null
+var player_cursor = null
 
 onready var ui = $CanvasLayer/UI
 onready var map = $Map
@@ -17,6 +23,8 @@ func _ready():
 	character.connect("update_health", self, "handle_update_health")
 	character.connect("dead", self, "handle_death")
 	map.connect("tile_played", self, "handle_tile_played")
+	map.connect("tile_hover", self, "handle_tile_hover")
+	map.connect("tile_unhover", self, "handle_tile_unhover")
 	ui.connect("card_selected", self, "handle_card_select")
 	ui.connect("card_deselected", self, "handle_card_deselect")
 	handle_update_health()
@@ -34,6 +42,7 @@ func handle_tile_played():
 	selected_card.play()
 
 func handle_character_arrived():
+	remove_cursor(character_cursor)
 	var map_pos = local_to_map(character.position)
 	if not map.is_available_cell(map_pos):
 		end_game()
@@ -53,7 +62,7 @@ func init_map():
 
 func init_character(map_pos):
 	map.visit(map_pos)
-	character.set_initial_position(map_to_local(map_pos), map_pos)
+	character.set_initial_position(map_to_local(map_pos))
 	move_character()
 
 func move_character():
@@ -75,7 +84,9 @@ func move_character():
 	var direction = available_directions[randi() % available_directions.size()]
 	var target_map_position = map_position + direction
 
-	character.set_target_position(map_to_local(target_map_position), target_map_position)
+	var local_target_position = map_to_local(target_map_position)
+	character.set_target_position(local_target_position)
+	character_cursor = add_cursor(local_target_position, character_cursor_color)
 
 func map_to_local(map_pos):
 	return map.map_to_world(map_pos) + map_offset
@@ -134,3 +145,21 @@ func handle_death():
 	
 func end_game():
 	get_tree().reload_current_scene()
+
+func add_cursor(pos, color):
+	var cursor = cursor_obj.instance()
+	add_child(cursor)
+	cursor.position = pos
+	cursor.modulate = color
+	return cursor
+
+func remove_cursor(cursor):
+	if is_instance_valid(cursor):
+		cursor.queue_free()
+
+func handle_tile_hover(tile_pos):
+	remove_cursor(player_cursor)
+	player_cursor = add_cursor(map_to_local(tile_pos), player_cursor_color)
+
+func handle_tile_unhover():
+	remove_cursor(player_cursor)

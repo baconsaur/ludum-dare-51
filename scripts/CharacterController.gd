@@ -33,11 +33,11 @@ func _process(delta):
 			is_traveling = false
 			emit_signal("arrived")
 
-func set_initial_position(pos, map_pos):
+func set_initial_position(pos):
 	position = pos
 	last_position = pos
 
-func set_target_position(pos, map_pos):
+func set_target_position(pos):
 	target_position = pos
 	is_traveling = true
 
