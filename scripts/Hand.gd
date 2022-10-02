@@ -9,7 +9,7 @@ var cards = []
 
 onready var refresh_meter: Control = $HandContainer/RefreshCountdown
 onready var card_container: Control = $HandContainer/CardContainer
-onready var card_names = get_node("/root/CardData").card_data.keys()
+onready var card_data = get_node("/root/CardData").card_data
 
 signal card_selected
 signal card_deselected
@@ -51,15 +51,15 @@ func refresh_hand():
 		add_card()
 
 func add_card():
-		var card = card_obj.instance()
-		card_container.add_child(card)
-		card.connect("pressed", self, "select_card", [card])
-		card.connect("played", self, "handle_card_played", [card])
-		
-		var random_card = card_names[randi() % card_names.size()]
-		card.set_type(random_card)
-		
-		cards.append(card)
+	var card = card_obj.instance()
+	card_container.add_child(card)
+	card.connect("pressed", self, "select_card", [card])
+	card.connect("played", self, "handle_card_played", [card])
+	
+	var random_card = randomize_card()
+	card.set_type(random_card)
+	
+	cards.append(card)
 
 func draw_cards(num_cards):
 	for i in range(num_cards):
@@ -73,3 +73,14 @@ func discard_cards(num_cards):
 		refresh_hand()
 	else:
 		pass # TODO
+
+func randomize_card():
+	var total_card_weight = 0
+	for card in card_data:
+		total_card_weight += card_data[card]["weight"]
+	var roll = randi() % total_card_weight
+
+	for card in card_data:
+		roll -= card_data[card]["weight"]
+		if roll <= 0:
+			return card

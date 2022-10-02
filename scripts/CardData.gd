@@ -2,6 +2,7 @@ extends Node
 
 var card_data = {
 	"clearing": {
+		"weight": 100,
 		"effect": {
 			"type": "character",
 			"name": "pass",
@@ -9,6 +10,7 @@ var card_data = {
 		}
 	},
 	"swamp": {
+		"weight": 50,
 		"effect": {
 			"type": "character",
 			"name": "delay",
@@ -16,6 +18,7 @@ var card_data = {
 		}
 	},
 	"thorns": {
+		"weight": 15,
 		"effect": {
 			"type": "character",
 			"name": "damage",
@@ -23,6 +26,7 @@ var card_data = {
 		}
 	},
 	"food": {
+		"weight": 15,
 		"effect": {
 			"type": "character",
 			"name": "heal",
@@ -30,6 +34,7 @@ var card_data = {
 		}
 	},
 	"draw_1": {
+		"weight": 15,
 		"effect": {
 			"type": "ui",
 			"name": "draw_cards",
@@ -37,6 +42,7 @@ var card_data = {
 		}
 	},
 	"draw_3": {
+		"weight": 5,
 		"effect": {
 			"type": "ui",
 			"name": "draw_cards",
@@ -44,6 +50,7 @@ var card_data = {
 		}
 	},
 	"extend_time_5": {
+		"weight": 5,
 		"effect": {
 			"type": "ui",
 			"name": "extend_time",
@@ -51,6 +58,7 @@ var card_data = {
 		}
 	},
 	"discard_hand": {
+		"weight": 5,
 		"effect": {
 			"type": "ui",
 			"name": "discard_cards",
