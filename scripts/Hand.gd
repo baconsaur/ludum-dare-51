@@ -1,12 +1,24 @@
 extends Control
 
 export var HAND_SIZE = 5
+export var MAX_HAND_SIZE = 9
 export var REFRESH_SECONDS = 10
 
 var refresh_countdown = 0
 var card_obj = preload("res://scenes/Card.tscn")
 var cards = []
 var first_hand = true
+var key_map = {
+	KEY_1: 1,
+	KEY_2: 2,
+	KEY_3: 3,
+	KEY_4: 4,
+	KEY_5: 5,
+	KEY_6: 6,
+	KEY_7: 7,
+	KEY_8: 8,
+	KEY_9: 9,
+}
 
 onready var refresh_meter: Control = $HandContainer/RefreshCountdown
 onready var card_container: Control = $HandContainer/CardContainer
@@ -26,6 +38,13 @@ func _process(delta):
 		refresh_hand()
 
 	refresh_meter.value = refresh_countdown
+
+func _unhandled_input(event):
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.scancode in key_map:
+			var key_value = key_map[event.scancode]
+			if cards.size() >= key_value:
+				select_card(cards[key_value - 1])
 
 func handle_card_played(card):
 	cards.erase(card)
@@ -52,6 +71,7 @@ func refresh_hand():
 	add_cards(HAND_SIZE)
 
 func add_cards(num_cards, make_fair=true):
+	num_cards = clamp(num_cards, 0, MAX_HAND_SIZE - cards.size())
 	var cards_selected = []
 	for i in range(num_cards):
 		var random_card = randomize_card()
