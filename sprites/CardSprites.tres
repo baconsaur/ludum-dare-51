@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=10 format=2]
+[gd_resource type="SpriteFrames" load_steps=16 format=2]
 
 [ext_resource path="res://sprites/card_images.png" type="Texture" id=1]
 
@@ -9,6 +9,10 @@ region = Rect2( 0, 0, 64, 96 )
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
 region = Rect2( 320, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 1 )
+region = Rect2( 640, 0, 64, 96 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
@@ -22,9 +26,25 @@ region = Rect2( 192, 0, 64, 96 )
 atlas = ExtResource( 1 )
 region = Rect2( 256, 0, 64, 96 )
 
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 768, 0, 64, 96 )
+
 [sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 1 )
 region = Rect2( 448, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 1 )
+region = Rect2( 576, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 512, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 1 )
+region = Rect2( 832, 0, 64, 96 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
@@ -33,6 +53,10 @@ region = Rect2( 64, 0, 64, 96 )
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 1 )
 region = Rect2( 384, 0, 64, 96 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 704, 0, 64, 96 )
 
 [resource]
 animations = [ {
@@ -44,6 +68,11 @@ animations = [ {
 "frames": [ SubResource( 6 ) ],
 "loop": true,
 "name": "discard_hand",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 10 ) ],
+"loop": true,
+"name": "down",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 4 ) ],
@@ -61,9 +90,29 @@ animations = [ {
 "name": "extend_time_5",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 14 ) ],
+"loop": true,
+"name": "fast",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 9 ) ],
 "loop": true,
 "name": "food",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "left",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 15 ) ],
+"loop": true,
+"name": "slow",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 3 ) ],
@@ -74,5 +123,10 @@ animations = [ {
 "frames": [ SubResource( 8 ) ],
 "loop": true,
 "name": "thorns",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "up",
 "speed": 5.0
 } ]

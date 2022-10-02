@@ -5,6 +5,8 @@ var hand_obj = preload("res://scenes/Hand.tscn")
 var hand: Control
 
 onready var health_meter = $Health
+onready var score_meter = $Score
+onready var speed_modifier_meter = $Speed
 
 signal card_selected
 signal card_deselected
@@ -47,3 +49,14 @@ func discard_cards(num_cards):
 
 func update_health(current_health):
 	health_meter.text = "Health: " + str(current_health)
+
+func update_score(current_score):
+	score_meter.text = "Score: " + str(current_score)
+
+func update_speed_modifier(modifier, countdown):
+	if countdown <= 0:
+		speed_modifier_meter.text = ""
+		return
+
+	var direction = "up" if modifier > 0 else "down"
+	speed_modifier_meter.text = "Speed " + str(direction) + " for " + str(stepify(countdown, 0.1)) + " seconds"

@@ -3,12 +3,16 @@ extends Node2D
 export var character_cursor_color = Color("#c57835")
 export var player_cursor_color = Color("#2f4c6c")
 export var spawn_point = Vector2(0, 0)
+export var spawn_delay = 1.5
 
 var selected_card: Control
 var all_directions = [Vector2(0, 1), Vector2(1, 0), Vector2(-1, 0), Vector2(0, -1)]
 var cursor_obj = preload("res://scenes/Cursor.tscn")
 var character_cursor = null
 var player_cursor = null
+var score = 0
+var speed_modifier = 0
+var speed_modifier_countdown = 0
 
 onready var ui = $CanvasLayer/UI
 onready var map = $Map
@@ -29,6 +33,15 @@ func _ready():
 	ui.connect("card_selected", self, "handle_card_select")
 	ui.connect("card_deselected", self, "handle_card_deselect")
 	handle_update_health()
+
+func _process(delta):
+	if speed_modifier_countdown > 0:
+		speed_modifier_countdown -= delta
+		if speed_modifier_countdown <= 0:
+			speed_modifier_countdown == 0
+			speed_modifier = 0
+			character.modify_speed(1)
+		ui.update_speed_modifier(speed_modifier, speed_modifier_countdown)
 
 func handle_card_select(card):
 	selected_card = card
@@ -51,11 +64,7 @@ func handle_character_arrived():
 		start_tile_effect(map_pos)
 
 func init_map():
-	var screen_size = get_viewport().size
 	var cell_size = map.cell_size.x
-	
-#	var y_bound = screen_size.y / 4 + map.padding
-#	var x_bound = screen_size.x / 4 + map.padding
 	var y_bound = map.padding
 	var x_bound = map.padding
 
@@ -71,25 +80,30 @@ func init_character(map_pos):
 	camera.follow_target = character
 	map.visit(map_pos)
 	character.set_initial_position(map_to_local(map_pos))
+	yield(get_tree().create_timer(spawn_delay), "timeout")
 	move_character()
 
 func move_character():
-	var available_directions = []
-	var valid_directions = []
 	var map_position = local_to_map(character.last_position)
-	for direction in all_directions:
-		if map.is_available_cell(map_position + direction):
-			available_directions.append(direction)
-		elif map.is_valid_cell(map_position + direction):
-			valid_directions.append(direction)
+	var direction = character.get_next_direction()
+	
+	if not direction:
+		var available_directions = []
+		var valid_directions = []
+		
+		for dir in all_directions:
+			if map.is_available_cell(map_position + dir):
+				available_directions.append(dir)
+			elif map.is_valid_cell(map_position + dir):
+				valid_directions.append(dir)
 
-	if available_directions.empty():
-		if valid_directions.empty():
-			available_directions = all_directions
-		else:
-			available_directions = valid_directions
+		if available_directions.empty():
+			if valid_directions.empty():
+				available_directions = all_directions
+			else:
+				available_directions = valid_directions
+		direction = available_directions[randi() % available_directions.size()]
 
-	var direction = available_directions[randi() % available_directions.size()]
 	var target_map_position = map_position + direction
 	map.expand(target_map_position)
 
@@ -104,7 +118,10 @@ func local_to_map(pos):
 	return map.world_to_map(pos)
 
 func start_tile_effect(tile_pos):
-	var tile_effect = card_data[map.get_tile_name(tile_pos)]["effect"]
+	var tile_data = card_data[map.get_tile_name(tile_pos)]
+	score += tile_data["points"]
+	ui.update_score(score)
+	var tile_effect = tile_data["effect"]
 	var signal_obj = null
 	match tile_effect["type"]:
 		"ui":
@@ -143,6 +160,14 @@ func effect_extend_time(seconds):
 
 func effect_discard_cards(num_cards):
 	ui.discard_cards(num_cards)
+
+func effect_force_direction(direction):
+	character.set_next_direction(direction)
+
+func effect_modify_speed(modifier, duration):
+	speed_modifier_countdown = duration
+	speed_modifier = modifier
+	character.modify_speed(modifier, true)
 	
 ############# END TILE EFFECTS #############
 

@@ -1,14 +1,16 @@
 extends Node2D
 
-export var move_speed = 0.3
+export var base_speed = 0.5
 export var max_health = 3
 
 var is_traveling = false
+var next_direction = null
 
 onready var health = max_health
 onready var sprite = $AnimatedSprite
 onready var last_position = position
 onready var target_position = position
+onready var move_speed = base_speed
 
 signal arrived
 signal effect_complete
@@ -62,3 +64,17 @@ func heal_damage(amount):
 	emit_signal("update_health")
 	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
 	emit_signal("effect_complete")
+
+func get_next_direction():
+	var direction = next_direction
+	next_direction = null
+	return direction
+
+func set_next_direction(direction):
+	next_direction = direction
+	emit_signal("effect_complete")
+
+func modify_speed(modifier, signal_required=false):
+	move_speed = base_speed * modifier
+	if signal_required:
+		emit_signal("effect_complete")
