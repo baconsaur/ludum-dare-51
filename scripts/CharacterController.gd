@@ -11,6 +11,14 @@ onready var sprite = $AnimatedSprite
 onready var last_position = position
 onready var target_position = position
 onready var move_speed = base_speed
+onready var eat_sound = $Eat
+onready var heal_sound = $Heal
+onready var hurt_sound = $Hurt
+onready var pickup_sound = $Pickup
+onready var sleep_sound = $Sleep
+onready var slow_sound = $Slow
+onready var fast_sound = $Fast
+onready var die_sound = $Die
 
 signal arrived
 signal effect_complete
@@ -59,6 +67,7 @@ func do_nothing():
 	emit_signal("effect_complete")
 
 func rest(seconds, heal_amount):
+	sleep_sound.play()
 	idle()
 	update_health(heal_amount)
 	yield(get_tree().create_timer(seconds), "timeout") # TODO add animation
@@ -74,12 +83,15 @@ func take_damage(amount):
 	idle()
 	update_health(-amount)
 	if health <= 0:
+		die_sound.play()
 		emit_signal("dead")
 		return
+	hurt_sound.play()
 	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
 	emit_signal("effect_complete")
 
 func heal_damage(amount):
+	eat_sound.play()
 	idle()
 	update_health(amount)
 	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
@@ -99,6 +111,10 @@ func set_next_direction(direction):
 	emit_signal("effect_complete")
 
 func modify_speed(modifier, signal_required=false):
+	if modifier > 1:
+		fast_sound.play()
+	else:
+		slow_sound.play()
 	idle()
 	move_speed = base_speed * modifier
 	if signal_required:

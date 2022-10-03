@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://sprites/CharacterSprites.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://scripts/CharacterController.gd" type="Script" id=2]
+[ext_resource path="res://sound/eat.wav" type="AudioStream" id=3]
+[ext_resource path="res://sound/pickup.wav" type="AudioStream" id=4]
+[ext_resource path="res://sound/speed_down.wav" type="AudioStream" id=5]
+[ext_resource path="res://sound/sleep.wav" type="AudioStream" id=6]
+[ext_resource path="res://sound/speed_up.wav" type="AudioStream" id=7]
+[ext_resource path="res://sound/hurt.wav" type="AudioStream" id=8]
+[ext_resource path="res://sound/heal.wav" type="AudioStream" id=9]
+[ext_resource path="res://sound/die.wav" type="AudioStream" id=10]
 
 [node name="Character" type="Node2D"]
 script = ExtResource( 2 )
@@ -9,3 +17,43 @@ script = ExtResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "idle_v"
+
+[node name="Eat" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 3 )
+bus = "Sounds"
+
+[node name="Heal" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 9 )
+bus = "Sounds"
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 8 )
+bus = "Sounds"
+
+[node name="Sleep" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 6 )
+bus = "Sounds"
+
+[node name="Slow" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 5 )
+bus = "Sounds"
+
+[node name="Fast" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 7 )
+bus = "Sounds"
+
+[node name="Die" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 10 )
+bus = "Sounds"
+
+[node name="Pickup" type="AudioStreamPlayer2D" parent="."]
+pause_mode = 2
+stream = ExtResource( 4 )
+bus = "Sounds"

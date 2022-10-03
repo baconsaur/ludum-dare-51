@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://sprites/fonts/dpcomic.regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
+[ext_resource path="res://sound/menu_bgm.mp3" type="AudioStream" id=3]
 
 [sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.172549, 0.207843, 0.301961, 1 )
@@ -103,5 +104,10 @@ custom_fonts/font = SubResource( 9 )
 text = "By Ash Kestrel @tetrapteryx"
 align = 1
 valign = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+autoplay = true
+bus = "Music"
 
 [connection signal="pressed" from="CanvasLayer/UI/VBoxContainer/MenuContainer/StartButton" to="CanvasLayer/UI" method="_on_StartButton_pressed"]

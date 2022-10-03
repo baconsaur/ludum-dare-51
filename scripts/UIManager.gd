@@ -83,6 +83,9 @@ func create_health_meter(num_hearts):
 		health_meter.add_child(heart)
 		hearts.append(heart)
 
+func play_card():
+	hand.play_sound.play()
+
 func pause():
 	var pause_menu_instance = pause_menu.instance()
 	add_child(pause_menu_instance)

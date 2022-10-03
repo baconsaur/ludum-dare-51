@@ -22,6 +22,8 @@ var key_map = {
 
 onready var refresh_meter: Control = $HandContainer/RefreshCountdown
 onready var card_container: Control = $HandContainer/CardContainer
+onready var shuffle_sound = $Shuffle
+onready var play_sound = $Play
 onready var card_data = get_node("/root/CardData").card_data
 
 signal card_selected
@@ -62,6 +64,7 @@ func select_card(card):
 	emit_signal("card_selected", card)
 
 func refresh_hand():
+	shuffle_sound.play()
 	emit_signal("card_deselected")
 	
 	for card in cards:

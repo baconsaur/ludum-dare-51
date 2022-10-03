@@ -53,6 +53,7 @@ func handle_card_deselect():
 	map.disallow_placement()
 
 func handle_tile_played():
+	ui.play_card()
 	map.disallow_placement()
 	selected_card.play()
 
@@ -60,6 +61,7 @@ func handle_character_arrived():
 	remove_cursor(character_cursor)
 	var map_pos = local_to_map(character.position)
 	if not map.is_available_cell(map_pos):
+		character.die_sound.play()
 		end_game()
 	else:
 		start_tile_effect(map_pos)
@@ -154,6 +156,7 @@ func effect_heal(amount):
 	character.heal_damage(amount)
 
 func effect_draw_cards(num_cards):
+	character.pickup_sound.play()
 	ui.draw_cards(num_cards)
 
 func effect_extend_time(seconds):
