@@ -1,6 +1,6 @@
 extends Node2D
 
-export var base_speed = 0.5
+export var base_speed = 0.28
 export var max_health = 3
 
 var is_traveling = false

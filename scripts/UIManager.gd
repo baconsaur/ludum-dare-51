@@ -58,5 +58,5 @@ func update_speed_modifier(modifier, countdown):
 		speed_modifier_meter.text = ""
 		return
 
-	var direction = "up" if modifier > 0 else "down"
+	var direction = "up" if modifier > 1 else "down"
 	speed_modifier_meter.text = "Speed " + str(direction) + " for " + str(stepify(countdown, 0.1)) + " seconds"
