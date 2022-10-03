@@ -57,10 +57,10 @@ animations = [ {
 "frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "run_h",
-"speed": 8.0
+"speed": 6.0
 }, {
 "frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
 "name": "run_v",
-"speed": 8.0
+"speed": 6.0
 } ]
