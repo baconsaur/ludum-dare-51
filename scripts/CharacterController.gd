@@ -1,6 +1,6 @@
 extends Node2D
 
-export var base_speed = 0.28
+export var base_speed = 0.4
 export var max_health = 3
 
 var is_traveling = false
@@ -42,15 +42,35 @@ func set_initial_position(pos):
 func set_target_position(pos):
 	target_position = pos
 	is_traveling = true
+	if pos.y - position.y > 0:
+		sprite.play("run_v")
+		sprite.set_flip_v(false)
+	elif pos.y - position.y < 0:
+		sprite.play("run_v")
+		sprite.set_flip_v(true)
+	if pos.x - position.x > 0:
+		sprite.play("run_h")
+		sprite.set_flip_h(true)
+	elif pos.x - position.x < 0:
+		sprite.play("run_h")
+		sprite.set_flip_h(false)
 
 func do_nothing():
 	emit_signal("effect_complete")
 
 func delay(seconds):
+	idle()
 	yield(get_tree().create_timer(seconds), "timeout") # TODO add animation
 	emit_signal("effect_complete")
 
+func idle():
+	if "_h" in sprite.animation:
+		sprite.play("idle_h")
+	else:
+		sprite.play("idle_v")
+
 func take_damage(amount):
+	idle()
 	health -= amount
 	emit_signal("update_health")
 	if health <= 0:
@@ -60,6 +80,7 @@ func take_damage(amount):
 	emit_signal("effect_complete")
 
 func heal_damage(amount):
+	idle()
 	health = min(health + amount, max_health)
 	emit_signal("update_health")
 	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
@@ -75,6 +96,7 @@ func set_next_direction(direction):
 	emit_signal("effect_complete")
 
 func modify_speed(modifier, signal_required=false):
+	idle()
 	move_speed = base_speed * modifier
 	if signal_required:
 		emit_signal("effect_complete")
