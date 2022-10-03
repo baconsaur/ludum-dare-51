@@ -8,10 +8,10 @@ var slow_icon = preload("res://sprites/slow_icon.png")
 var hand: Control
 var hearts = []
 
-onready var health_meter = $StatsContainer/Health
-onready var score_meter = $StatsContainer/Score/Number
-onready var speed_modifier_icon = $StatsContainer/Speed/Icon
-onready var speed_modifier_label = $StatsContainer/Speed/Number
+onready var health_meter = $MarginContainer2/StatsContainer/Health
+onready var score_meter = $MarginContainer2/StatsContainer/Score/Number
+onready var speed_modifier_icon = $MarginContainer2/StatsContainer/Speed/Icon
+onready var speed_modifier_label = $MarginContainer2/StatsContainer/Speed/Number
 
 signal card_selected
 signal card_deselected
@@ -22,8 +22,7 @@ func _ready():
 
 func _process(delta):
 	if not get_tree().paused and Input.is_action_just_pressed("ui_cancel"):
-		var pause_menu_instance = pause_menu.instance()
-		add_child(pause_menu_instance)
+		pause()
 
 func create_hand():
 	if hand:
@@ -83,3 +82,10 @@ func create_health_meter(num_hearts):
 		var heart = heart_obj.instance()
 		health_meter.add_child(heart)
 		hearts.append(heart)
+
+func pause():
+	var pause_menu_instance = pause_menu.instance()
+	add_child(pause_menu_instance)
+
+func _on_PauseButton_pressed():
+	pause()
