@@ -13,6 +13,7 @@ var player_cursor = null
 var score = 0
 var speed_modifier = 0
 var speed_modifier_countdown = 0
+var game_over_menu = preload("res://scenes/GameOverMenu.tscn")
 
 onready var ui = $CanvasLayer/UI
 onready var map = $Map
@@ -178,7 +179,9 @@ func handle_death():
 	end_game()
 	
 func end_game():
-	get_tree().reload_current_scene()
+	var game_over_menu_instance = game_over_menu.instance()
+	ui.add_child(game_over_menu_instance)
+	game_over_menu_instance.set_score(score)
 
 func add_cursor(pos, color):
 	var cursor = cursor_obj.instance()

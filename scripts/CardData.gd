@@ -124,7 +124,7 @@ var card_data = {
 	},
 	"clear": {
 		"play_on": "visited",
-		"tile_name": "woods",
+		"tile_name": "clearing",
 		"weight": 100,
 		"points": 1,
 		"effect": {
