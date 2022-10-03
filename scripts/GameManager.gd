@@ -75,7 +75,7 @@ func init_map():
 		for x in range(-x_bound, x_bound + cell_size, cell_size):
 			var tile_pos = local_to_map(Vector2(x, y))
 			if map.get_cell(tile_pos.x, tile_pos.y) == map.INVALID_CELL:
-				map.set_cell(tile_pos.x, tile_pos.y, 0)
+				map.set_cell(tile_pos.x, tile_pos.y, map.clear_tile)
 			map.update_bounds(tile_pos)
 	init_character(spawn_point)
 

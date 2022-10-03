@@ -66,7 +66,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 1 )
-text = "Ludum Dare 51"
+text = "Winding Woods"
 align = 1
 valign = 1
 
