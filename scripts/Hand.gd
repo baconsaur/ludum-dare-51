@@ -44,7 +44,8 @@ func _unhandled_input(event):
 		if event.scancode in key_map:
 			var key_value = key_map[event.scancode]
 			if cards.size() >= key_value:
-				select_card(cards[key_value - 1])
+				cards[key_value - 1].grab_focus()
+				cards[key_value - 1].emit_signal("pressed")
 
 func handle_card_played(card):
 	cards.erase(card)

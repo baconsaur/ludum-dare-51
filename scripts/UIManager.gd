@@ -3,12 +3,15 @@ extends Control
 var pause_menu = preload("res://scenes/PauseMenu.tscn")
 var hand_obj = preload("res://scenes/Hand.tscn")
 var heart_obj = preload("res://scenes/Heart.tscn")
+var fast_icon = preload("res://sprites/fast_icon.png")
+var slow_icon = preload("res://sprites/slow_icon.png")
 var hand: Control
 var hearts = []
 
-onready var health_meter = $Health
-onready var score_meter = $Score
-onready var speed_modifier_meter = $Speed
+onready var health_meter = $StatsContainer/Health
+onready var score_meter = $StatsContainer/Score/Number
+onready var speed_modifier_icon = $StatsContainer/Speed/Icon
+onready var speed_modifier_label = $StatsContainer/Speed/Number
 
 signal card_selected
 signal card_deselected
@@ -61,15 +64,19 @@ func update_health(current_health):
 			hearts[i].sprite.play("empty")
 
 func update_score(current_score):
-	score_meter.text = "Score: " + str(current_score)
+	score_meter.text = str(current_score)
 
 func update_speed_modifier(modifier, countdown):
 	if countdown <= 0:
-		speed_modifier_meter.text = ""
+		speed_modifier_label.text = ""
+		speed_modifier_icon.texture = null
 		return
 
-	var direction = "up" if modifier > 1 else "down"
-	speed_modifier_meter.text = "Speed " + str(direction) + " for " + str(stepify(countdown, 0.1)) + " seconds"
+	speed_modifier_label.text = "%0.1f s" % countdown
+	if modifier > 1:
+		speed_modifier_icon.texture = fast_icon
+	else:
+		speed_modifier_icon.texture = slow_icon
 
 func create_health_meter(num_hearts):
 	for i in num_hearts:

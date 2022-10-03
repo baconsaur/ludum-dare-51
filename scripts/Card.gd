@@ -1,11 +1,13 @@
 extends TextureButton
 
+export var icon_offset = 26
+
 var card_name: String
 var play_on: String
 var is_selected = false
-var visited_bg_sprite = preload("res://sprites/card_background_visited.png")
 
 onready var sprite = $AnimatedSprite
+onready var sprite_start_y = sprite.position.y
 
 signal played
 
@@ -16,8 +18,6 @@ func set_type(name, data):
 		card_name = data["tile_name"]
 	play_on = data["play_on"]
 	sprite.play(name)
-	if play_on == "visited":
-		texture_normal = visited_bg_sprite
 
 func play():
 	destroy()
@@ -29,9 +29,19 @@ func destroy():
 	queue_free()
 
 func select():
+	sprite.position.y = sprite_start_y - icon_offset
 	is_selected = true
-	modulate = Color(1, 1, 0)
 
 func deselect():
+	sprite.position.y = sprite_start_y
 	is_selected = false
-	modulate = Color(1, 1, 1)
+
+func _on_Card_mouse_entered():
+	if is_selected:
+		return
+	sprite.position.y = sprite_start_y - icon_offset
+
+func _on_Card_mouse_exited():
+	if is_selected:
+		return
+	sprite.position.y = sprite_start_y

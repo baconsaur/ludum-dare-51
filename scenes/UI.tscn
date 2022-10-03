@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/UIManager.gd" type="Script" id=1]
+[ext_resource path="res://sprites/fonts/dpcomic.regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://sprites/points_icon.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+font_data = ExtResource( 2 )
+
+[sub_resource type="ImageTexture" id=3]
 
 [node name="UI" type="Control"]
 anchor_right = 1.0
@@ -10,22 +18,52 @@ mouse_filter = 2
 size_flags_horizontal = 3
 script = ExtResource( 1 )
 
-[node name="Health" type="HBoxContainer" parent="."]
+[node name="StatsContainer" type="VBoxContainer" parent="."]
 margin_left = 14.0
 margin_top = 14.0
-margin_right = 98.0
-margin_bottom = 42.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="Health" type="HBoxContainer" parent="StatsContainer"]
+margin_right = 52.0
 custom_constants/separation = -3
 
-[node name="Score" type="Label" parent="."]
-margin_left = 10.0
-margin_top = 60.0
-margin_right = 61.0
-margin_bottom = 74.0
-text = "Score: 0"
+[node name="Score" type="HBoxContainer" parent="StatsContainer"]
+margin_top = 4.0
+margin_right = 52.0
+margin_bottom = 32.0
+custom_constants/separation = 8
 
-[node name="Speed" type="Label" parent="."]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 61.0
-margin_bottom = 24.0
+[node name="Icon" type="TextureRect" parent="StatsContainer/Score"]
+margin_right = 30.0
+margin_bottom = 28.0
+texture = ExtResource( 3 )
+
+[node name="Number" type="Label" parent="StatsContainer/Score"]
+margin_left = 38.0
+margin_right = 52.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+text = "0"
+valign = 1
+
+[node name="Speed" type="HBoxContainer" parent="StatsContainer"]
+margin_top = 36.0
+margin_right = 52.0
+margin_bottom = 64.0
+custom_constants/separation = 8
+
+[node name="Icon" type="TextureRect" parent="StatsContainer/Speed"]
+margin_bottom = 28.0
+texture = SubResource( 3 )
+
+[node name="Number" type="Label" parent="StatsContainer/Speed"]
+margin_left = 8.0
+margin_right = 52.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+valign = 1
