@@ -3,7 +3,7 @@ extends Control
 export var menu_scene = "res://scenes/MainMenu.tscn"
 export var game_scene = "res://scenes/Game.tscn"
 
-onready var score = $ScoreText
+onready var score = $MenuContainer/MarginContainer/VBoxContainer/ScoreText
 
 
 func _ready():

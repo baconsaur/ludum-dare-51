@@ -1,14 +1,17 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://sprites/fonts/dpcomic.regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
 
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.172549, 0.207843, 0.301961, 1 )
+
 [sub_resource type="DynamicFont" id=1]
-size = 38
+size = 44
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=7]
-size = 17
+size = 25
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=2]
@@ -21,10 +24,18 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
+[sub_resource type="DynamicFont" id=9]
+font_data = ExtResource( 1 )
+
 [node name="Menu" type="Node2D"]
 pause_mode = 2
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 8 )
 
 [node name="UI" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
@@ -35,35 +46,42 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
 
-[node name="Title" type="Label" parent="CanvasLayer/UI"]
-anchor_left = 0.5
-anchor_top = 0.25
-anchor_right = 0.5
-anchor_bottom = 0.25
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI/VBoxContainer"]
+margin_right = 640.0
+margin_bottom = 101.0
+custom_constants/margin_top = 60
+
+[node name="Title" type="Label" parent="CanvasLayer/UI/VBoxContainer/MarginContainer"]
+margin_top = 60.0
+margin_right = 640.0
+margin_bottom = 101.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 1
 custom_fonts/font = SubResource( 1 )
 text = "Ludum Dare 51"
 align = 1
 valign = 1
 
-[node name="MenuContainer" type="VBoxContainer" parent="CanvasLayer/UI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="MenuContainer" type="VBoxContainer" parent="CanvasLayer/UI/VBoxContainer"]
+margin_top = 105.0
+margin_right = 640.0
+margin_bottom = 340.0
 grow_horizontal = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 8
 
-[node name="StartButton" type="Button" parent="CanvasLayer/UI/MenuContainer"]
-margin_right = 34.0
-margin_bottom = 17.0
+[node name="StartButton" type="Button" parent="CanvasLayer/UI/VBoxContainer/MenuContainer"]
+margin_right = 640.0
+margin_bottom = 235.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
 custom_styles/hover = SubResource( 2 )
@@ -71,6 +89,19 @@ custom_styles/pressed = SubResource( 3 )
 custom_styles/focus = SubResource( 4 )
 custom_styles/disabled = SubResource( 5 )
 custom_styles/normal = SubResource( 6 )
-text = "Start"
+text = "Play"
 
-[connection signal="pressed" from="CanvasLayer/UI/MenuContainer/StartButton" to="CanvasLayer/UI" method="_on_StartButton_pressed"]
+[node name="Credits" type="Label" parent="CanvasLayer/UI/VBoxContainer"]
+margin_top = 344.0
+margin_right = 640.0
+margin_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 9 )
+text = "By Ash Kestrel @tetrapteryx"
+align = 1
+valign = 1
+
+[connection signal="pressed" from="CanvasLayer/UI/VBoxContainer/MenuContainer/StartButton" to="CanvasLayer/UI" method="_on_StartButton_pressed"]

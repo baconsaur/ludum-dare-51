@@ -2,8 +2,8 @@ extends Control
 
 export var menu_scene = "res://scenes/MainMenu.tscn"
 
-onready var music_toggle = $MenuContainer/MusicToggle
-onready var sound_toggle = $MenuContainer/SoundToggle
+onready var music_toggle = $MenuContainer/ButtonContainer/MusicToggle
+onready var sound_toggle = $MenuContainer/ButtonContainer/SoundToggle
 onready var music_bus = AudioServer.get_bus_index("Music")
 onready var sounds_bus = AudioServer.get_bus_index("Sounds")
 
