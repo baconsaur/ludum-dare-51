@@ -33,7 +33,7 @@ func _ready():
 	map.connect("tile_unhover", self, "handle_tile_unhover")
 	ui.connect("card_selected", self, "handle_card_select")
 	ui.connect("card_deselected", self, "handle_card_deselect")
-	handle_update_health()
+	ui.create_health_meter(character.max_health)
 
 func _process(delta):
 	if speed_modifier_countdown > 0:
@@ -144,8 +144,8 @@ func finish_tile_effect(tile_pos):
 func effect_pass():
 	character.do_nothing()
 
-func effect_delay(delay):
-	character.delay(delay)
+func effect_rest(delay, amount):
+	character.rest(delay, amount)
 
 func effect_damage(amount):
 	character.take_damage(amount)

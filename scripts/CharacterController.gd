@@ -58,8 +58,9 @@ func set_target_position(pos):
 func do_nothing():
 	emit_signal("effect_complete")
 
-func delay(seconds):
+func rest(seconds, heal_amount):
 	idle()
+	update_health(heal_amount)
 	yield(get_tree().create_timer(seconds), "timeout") # TODO add animation
 	emit_signal("effect_complete")
 
@@ -71,8 +72,7 @@ func idle():
 
 func take_damage(amount):
 	idle()
-	health -= amount
-	emit_signal("update_health")
+	update_health(-amount)
 	if health <= 0:
 		emit_signal("dead")
 		return
@@ -81,10 +81,13 @@ func take_damage(amount):
 
 func heal_damage(amount):
 	idle()
-	health = min(health + amount, max_health)
-	emit_signal("update_health")
+	update_health(amount)
 	yield(get_tree().create_timer(0.5), "timeout") # TODO add animation
 	emit_signal("effect_complete")
+
+func update_health(amount):
+	health = clamp(health + amount, 0, max_health)
+	emit_signal("update_health")
 
 func get_next_direction():
 	var direction = next_direction

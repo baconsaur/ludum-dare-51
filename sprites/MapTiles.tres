@@ -48,7 +48,7 @@
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
-2/name = "swamp"
+2/name = "rest"
 2/texture = ExtResource( 2 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 1 )

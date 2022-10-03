@@ -11,14 +11,14 @@ var card_data = {
 			"args": []
 		}
 	},
-	"swamp": {
+	"rest": {
 		"play_on": "empty",
 		"weight": 20,
 		"points": 0,
 		"effect": {
 			"type": "character",
-			"name": "delay",
-			"args": [1]
+			"name": "rest",
+			"args": [1, 0.5]
 		}
 	},
 	"up": {
@@ -125,7 +125,7 @@ var card_data = {
 	"clear": {
 		"play_on": "visited",
 		"tile_name": "clearing",
-		"weight": 100,
+		"weight": 60,
 		"points": 1,
 		"effect": {
 			"type": "character",
